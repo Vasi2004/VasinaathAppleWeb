@@ -94,6 +94,38 @@
       visibility: visible;
     }
 
+    #backToHome {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #0071e3;
+      color: #fff;
+      border: none;
+      border-radius: 980px;
+      width: auto;
+      height: auto;
+      white-space: nowrap;
+      padding: 0.65rem 1.3rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease, transform 0.2s ease;
+      z-index: 999;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Helvetica, Arial, sans-serif;
+    }
+
+    #backToHome:hover {
+      background: #0058b3;
+      transform: translateY(-2px);
+    }
+
+    #backToHome.show {
+      display: flex;
+    }
+
     /* NAV */
     nav {
       position: fixed;
@@ -439,7 +471,7 @@
     /* PROJECT GRID */
     .proj-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 1rem
     }
 
@@ -1941,6 +1973,15 @@
             </div>
           </div>
         </div>
+
+        <div style="margin-top:2.5rem;padding:1.75rem;border:1px solid var(--border);border-radius:14px;background:var(--s1);display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap">
+          <div>
+            <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--acc2);margin-bottom:0.35rem">Featured Application</div>
+            <div style="font-size:1.05rem;font-weight:700;margin-bottom:0.25rem">2027 Apple Internship, Information Systems and Technology</div>
+            <div style="font-size:0.82rem;color:var(--muted)">A dedicated page showing why my background fits this role.</div>
+          </div>
+          <a href="#" onclick="showApple(); return false;" class="btn btn-pri" style="flex-shrink:0">View the Apple page</a>
+        </div>
       </div>
     </section>
 
@@ -2124,10 +2165,12 @@
     </div>
 
     <div class="a-return">
-      <a href="#" onclick="showMain(); return false;">Return to Main Homepage</a>
+      <a href="#" onclick="document.querySelector('#apple-page').scrollIntoView({behavior:'smooth'}); return false;">Back to Top</a>
     </div>
   </div>
   <!-- ============ END APPLE PAGE ============ -->
+
+  <button id="backToHome" onclick="showMain()">Go to homepage</button>
 
    <script>
     function showApple() {
@@ -2139,6 +2182,8 @@
       if (canvas) canvas.style.display = 'none';
       const backBtn = document.getElementById('backToTop');
       if (backBtn) backBtn.style.display = 'none';
+      const homeBtn = document.getElementById('backToHome');
+      if (homeBtn) homeBtn.classList.add('show');
       window.scrollTo(0, 0);
     }
     function showMain() {
@@ -2148,10 +2193,17 @@
       document.body.style.background = '';
       const canvas = document.getElementById('networkCanvas');
       if (canvas) canvas.style.display = 'block';
+      const homeBtn = document.getElementById('backToHome');
+      if (homeBtn) homeBtn.classList.remove('show');
       const backBtn = document.getElementById('backToTop');
       if (backBtn) backBtn.style.display = 'flex';
       window.scrollTo(0, 0);
+      const homeLink = document.querySelector('.nl[data-section="home"]');
+      setActiveNav(homeLink);
+      setTimeout(() => setActiveNav(homeLink), 50);
     }
+
+    // Site loads on the homepage by default
 
     const scrollSections = ['home', 'projects', 'experience', 'skills', 'contact'];
     function navTo(id, el) {
